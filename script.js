@@ -260,14 +260,8 @@ function playList(regex, dontChange) {
     for (var i = $('songtable').getElementsByTagName('tr'), l = i.length; l--; ) {
         if (regex.test(i[l].innerHTML)) {
             console.log(i[l]);
-            i[l].className = 'visible';
-        } else {
-            i[l].className = 'hidden';
+            i[l].onclick();
         }
-    }
-
-    for (var i = document.querySelectorAll('#songtable tr.visible'), l = i.length; l--; ) {
-        i[l].onclick();
     }
 }
 

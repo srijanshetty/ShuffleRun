@@ -1,3 +1,20 @@
+(function($) {
+    $.ajax({
+        type:'GET',
+        datatype:'json',
+        url:'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=srijanshetty&api_key=6204323154c56b8ee6f70edb5616a730&limit=10&format=json',
+        success : function(data) {
+            console.log(data);
+        },
+        complete: function(){
+            console.log('Got the list of tracks');
+        },
+        error : function(e,d,f){
+            console.log(f);
+        },
+    });
+})(window.jQuery);
+
 function parseFile(file, callback) {
     if (localStorage[file.name])
         return callback(JSON.parse(localStorage[file.name]));
@@ -147,7 +164,11 @@ function getSongs(files) {
     }
 }
 
-var currentSong = 0;
+var currentSong = 0,
+    first = true,
+    old_longitude,
+    old_latitude,
+    prev_regex = null;
 
 function nextSong() {
     try {
@@ -198,12 +219,7 @@ onload = function() {
     } else {
         $("support").innerHTML += "Your browser probably does not support Object URLs<br>";
     }
-  }
-
-var first = true,
-    old_longitude,
-    old_latitude,
-    prev_regex = null;
+}
 
 function computeSpeed() {
     var speed = null,
@@ -213,12 +229,12 @@ function computeSpeed() {
     navigator.geolocation.getCurrentPosition(function (position) {
         if(!first) {
             dis = calculateDistance(position.coords.latitude, position.coords.longitude, old_latitude, old_longitude);
-            console.log(dis);
-            speed = dis;
-            if (speed === 0) {
+            speed = dis*100/5;
+            $('log').innerHTML += '<br/>' + speed;
+            if (speed <= 2 && speed >= 0) {
+                regex = /alternative/gi;
+            } else if (speed > 2 ) {
                 regex = /rock/gi;
-            } else if (speed > 0 ) {
-                regex = /blues/gi;
             }
 
             playList(regex, regexSame(prev_regex, regex));
@@ -229,7 +245,7 @@ function computeSpeed() {
         old_longitude = position.coords.longitude;
         old_latitude = position.coords.latitude;
     });
-    setTimeout(computeSpeed, 1000);
+    setTimeout(computeSpeed, 5000);
 }
 
 // Compute the distance on the basis of coordinates
@@ -256,7 +272,7 @@ function playList(regex, dontChange) {
     }
 
     empty();
-    // Make all regex tracks visible
+    // Add all songs to now playing
     for (var i = $('songtable').getElementsByTagName('tr'), l = i.length; l--; ) {
         if (regex.test(i[l].innerHTML)) {
             console.log(i[l]);
@@ -265,6 +281,7 @@ function playList(regex, dontChange) {
     }
 }
 
+// Checking the equality of regexs
 function regexSame(r1, r2) {
     if (r1 instanceof RegExp && r2 instanceof RegExp) {
         var props = ["global", "multiline", "ignoreCase", "source"];

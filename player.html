@@ -4,6 +4,7 @@
     <title>MP3 Player</title>
     <link rel="icon"  type="image/png" href="16.png">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery.js"></script>
     <script src="id3v2.js"></script>
     <script src="script.js"></script>
   </head>
@@ -34,6 +35,7 @@
 
     <div style="height: 50px"></div>
 
+    <p id="log"></p>
     <div id="footer">
       <audio onended="nextSong()" controls id="player">
     </div>

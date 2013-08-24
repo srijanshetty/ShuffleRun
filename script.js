@@ -200,48 +200,39 @@ onload = function() {
     }
   }
 
-function playList(regex) {
-    empty();
-    for (var i = $('songtable').getElementsByTagName('tr'), l = i.length; l--; ) {
-        if (regex.test(i[l].innerHTML)) {
-            console.log(i[l]);
-            i[l].className = 'visible';
-        } else {
-            i[l].className = 'hidden';
-        }
-    }
-
-    for (var i = document.querySelectorAll('#songtable tr.visible'), l = i.length; l--; ) {
-        i[l].onclick();
-    }
-}
-
 var first = true,
     old_longitude,
-    old_latitude;
+    old_latitude,
+    prev_regex = null;
 
 function computeSpeed() {
     var speed = null,
         regex;
     console.log('time');
+
     navigator.geolocation.getCurrentPosition(function (position) {
         if(!first) {
             dis = calculateDistance(position.coords.latitude, position.coords.longitude, old_latitude, old_longitude);
             console.log(dis);
             speed = dis;
-            if (speed) {
+            if (speed === 0) {
                 regex = /rock/gi;
-                playList(regex);
+            } else if (speed > 0 ) {
+                regex = /blues/gi;
             }
+
+            playList(regex, regexSame(prev_regex, regex));
+            prev_regex = regex;
         } else {
             first = false;
         }
         old_longitude = position.coords.longitude;
         old_latitude = position.coords.latitude;
     });
-    setTimeout(computeSpeed, 1);
+    setTimeout(computeSpeed, 1000);
 }
 
+// Compute the distance on the basis of coordinates
 function calculateDistance(lat1, lon1, lat2, lon2) {
     var R = 6371; // km
     var dLat = (lat2 - lat1).toRad();
@@ -258,3 +249,38 @@ Number.prototype.toRad = function() {
     return this * Math.PI / 180;
 }
 
+function playList(regex, dontChange) {
+    // If there is no change in speed
+    if (dontChange){
+       return;
+    }
+
+    empty();
+    // Make all regex tracks visible
+    for (var i = $('songtable').getElementsByTagName('tr'), l = i.length; l--; ) {
+        if (regex.test(i[l].innerHTML)) {
+            console.log(i[l]);
+            i[l].className = 'visible';
+        } else {
+            i[l].className = 'hidden';
+        }
+    }
+
+    for (var i = document.querySelectorAll('#songtable tr.visible'), l = i.length; l--; ) {
+        i[l].onclick();
+    }
+}
+
+function regexSame(r1, r2) {
+    if (r1 instanceof RegExp && r2 instanceof RegExp) {
+        var props = ["global", "multiline", "ignoreCase", "source"];
+        for (var i = 0; i < props.length; i++) {
+            var prop = props[i];
+            if (r1[prop] !== r2[prop]) {
+                return(false);
+            }
+        }
+        return(true);
+    }
+    return(false);
+}

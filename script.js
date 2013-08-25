@@ -1,33 +1,33 @@
-// (function($) {
-//     var i,
-//         songs = [];
+(function($) {
+    var i,
+        songs = [];
 
-//     window.songs = songs;
+    window.songs = songs;
 
-//     $.ajax({
-//         type:'GET',
-//         datatype:'json',
-//         url:'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=srijanshetty&api_key=6204323154c56b8ee6f70edb5616a730&limit=10&format=json',
-//         success : function(data) {
-//             getTracks(data);
-//         },
-//         complete: function(){
-//             console.log('Got the list of tracks');
-//         },
-//         error : function(e,d,f){
-//             console.log(f);
-//         },
-//     });
+    $.ajax({
+        type:'GET',
+        datatype:'json',
+        url:'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=srijanshetty&api_key=6204323154c56b8ee6f70edb5616a730&limit=10&format=json',
+        success : function(data) {
+            getTracks(data);
+        },
+        complete: function(){
+            console.log('Got the list of tracks');
+        },
+        error : function(e,d,f){
+            console.log(f);
+        },
+    });
 
-//     function getTracks(data) {
-//         for (i=0; i<10; ++i) {
-//             console.log(data.toptracks.track[i].name);
-//             songs[i].artist = data.toptracks.track[i].artist && data.toptracks.track[i].artist.name;
-//             songs[i].name = data.toptracks.track[i].name;
-//         }
-//         console.log(songs);
-//     }
-// })(window.jQuery);
+    function getTracks(data) {
+        for (i=0; i<10; ++i) {
+            console.log(data.toptracks.track[i].name);
+            songs[i].artist = data.toptracks.track[i].artist && data.toptracks.track[i].artist.name;
+            songs[i].name = data.toptracks.track[i].name;
+        }
+        console.log(songs);
+    }
+})(window.jQuery);
 
 function parseFile(file, callback) {
     if (localStorage[file.name])

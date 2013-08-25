@@ -1,3 +1,11 @@
-This is almost definitely the first javascript/html mp3 player which can load music from your hard drive and parse id3 tags.
+# Introduction
 
-[Try it out online](http://antimatter15.github.com/player/player.html) it should work on the latest version of chrome and possibly safari. Chromium and firefox 4 will probably only work with ogg vorbis files. Internet explorer 9, mobile safari and opera will almost definitely not work.
+So, our team had a huge problem; whenever we went for a run, our music never matched our pace. So we decided to fix this little problem.
+
+Using Cut-throat HTML5 features like geolocation, filesystem and Web Audio, we've developed an HTML5 webapp which changes the music to match the speed at which you're running.
+
+# Technologies Used
+
+Web Audio
+Filesystem
+GeoLocation

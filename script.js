@@ -1,13 +1,16 @@
 (function($) {
     var i,
-        songs = [];
+        songs = [],
+        numberOfTracks = 10,
+        user = "srijanshetty";
 
+    // Temporary
     window.songs = songs;
 
     $.ajax({
         type:'GET',
         datatype:'json',
-        url:'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=srijanshetty&api_key=6204323154c56b8ee6f70edb5616a730&limit=10&format=json',
+        url:'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=' + user + '&api_key=6204323154c56b8ee6f70edb5616a730&limit=' + numberOfTracks + '&format=json',
         success : function(data) {
             getTracks(data);
         },
@@ -20,13 +23,36 @@
     });
 
     function getTracks(data) {
-        for (i=0; i<10; ++i) {
-            console.log(data.toptracks.track[i].name);
-            songs[i].artist = data.toptracks.track[i].artist && data.toptracks.track[i].artist.name;
-            songs[i].name = data.toptracks.track[i].name;
+        for (i=0; i<numberOfTracks; ++i) {
+            try {
+                songs.push(data.toptracks.track[i].name);
+            } catch (e) {}
         }
-        console.log(songs);
     }
+
+    // For implementing the feature of top tracks from lastfm
+    function lastfm () {
+        var regex,j,
+            $songtable = $('#songtable')[0],
+            list = [];
+
+        for ( j=0; j<numberOfTracks; ++j ) {
+            console.log(songs[i]);
+            regex = new RegExp(songs[i], 'gi');
+            for (i = $songtable.getElementsByTagName('tr'), l = i.length; l--; ) {
+                if (regex.test(i[l].innerHTML)) {
+                    console.log(i[l]);
+                    if (!(i[l] in list)){
+                        console.log($(i[l]).find('td').eq(0).text());
+                        list.push($(i[l]).find('td').eq(0).text());
+                        i[l].onclick();
+                    }
+                }
+            }
+        }
+    }
+
+    window.lastfm = lastfm;
 })(window.jQuery);
 
 function parseFile(file, callback) {
@@ -279,6 +305,7 @@ Number.prototype.toRad = function() {
     return this * Math.PI / 180;
 }
 
+// Add songs to a playlist depending on the given regex
 function playList(regex, dontChange) {
     // If there is no change in speed
     if (dontChange){

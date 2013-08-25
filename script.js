@@ -271,9 +271,9 @@ function computeSpeed() {
             dis = calculateDistance(position.coords.latitude, position.coords.longitude, old_latitude, old_longitude);
             speed = dis*1000/5;
             $('log').innerHTML += '<br/>' + speed;
-            if (speed <= 2 && speed >= 0) {
+            if (speed <= 1.2 && speed >= 0) {
                 regex = /alternative/gi;
-            } else if (speed > 2 ) {
+            } else if (speed > 1.2 ) {
                 regex = /rock/gi;
             }
 

@@ -1,19 +1,33 @@
-(function($) {
-    $.ajax({
-        type:'GET',
-        datatype:'json',
-        url:'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=srijanshetty&api_key=6204323154c56b8ee6f70edb5616a730&limit=10&format=json',
-        success : function(data) {
-            console.log(data);
-        },
-        complete: function(){
-            console.log('Got the list of tracks');
-        },
-        error : function(e,d,f){
-            console.log(f);
-        },
-    });
-})(window.jQuery);
+// (function($) {
+//     var i,
+//         songs = [];
+
+//     window.songs = songs;
+
+//     $.ajax({
+//         type:'GET',
+//         datatype:'json',
+//         url:'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=srijanshetty&api_key=6204323154c56b8ee6f70edb5616a730&limit=10&format=json',
+//         success : function(data) {
+//             getTracks(data);
+//         },
+//         complete: function(){
+//             console.log('Got the list of tracks');
+//         },
+//         error : function(e,d,f){
+//             console.log(f);
+//         },
+//     });
+
+//     function getTracks(data) {
+//         for (i=0; i<10; ++i) {
+//             console.log(data.toptracks.track[i].name);
+//             songs[i].artist = data.toptracks.track[i].artist && data.toptracks.track[i].artist.name;
+//             songs[i].name = data.toptracks.track[i].name;
+//         }
+//         console.log(songs);
+//     }
+// })(window.jQuery);
 
 function parseFile(file, callback) {
     if (localStorage[file.name])
@@ -229,7 +243,7 @@ function computeSpeed() {
     navigator.geolocation.getCurrentPosition(function (position) {
         if(!first) {
             dis = calculateDistance(position.coords.latitude, position.coords.longitude, old_latitude, old_longitude);
-            speed = dis*100/5;
+            speed = dis*1000/5;
             $('log').innerHTML += '<br/>' + speed;
             if (speed <= 2 && speed >= 0) {
                 regex = /alternative/gi;

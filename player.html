@@ -21,10 +21,10 @@
       <table id="playtable"></table>
     </div>
 
-    <input type="file" webkitdirectory directory multiple mozdirectory onchange="getSongs(this.files)">
+    <input id="files" type="file" webkitdirectory directory multiple mozdirectory onchange="getSongs(this.files)">
 
     <div id="listtools">
-      <a href="javascript:shuffle()">Shuffle</a> /
+      <a href="javascript:shuffle()">Shuffle</a> |
       <a href="javascript:empty()">Clear</a>
     </div>
 

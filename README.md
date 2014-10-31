@@ -5,3 +5,6 @@ We've also used the Last FM API to play the top 10 tracks of the a user for Desk
 # The tech shebang!
 Using Cut-throat HTML5 features like geolocation, filesystem and Web Audio, we've developed an HTML5 web-app which changes the music to match the speed at which you're running.
 Another module which is relatively salient is Music Genre Classification, the idea is to custom tag songs (using Last FM API) which will aid in changing the music according to the analyzed data.
+
+# Acknowledgement
+- Based off https://github.com/antimatter15/player
